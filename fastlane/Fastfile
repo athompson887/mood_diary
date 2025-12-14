@@ -1,0 +1,155 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Generate screenshots for App Store"
+  lane :screenshots do
+    # Run integration test on multiple simulators
+    devices = [
+      "iPhone 15 Pro Max",
+      "iPhone 15 Pro",
+      "iPhone SE (3rd generation)",
+      "iPad Pro (12.9-inch) (6th generation)"
+    ]
+
+    devices.each do |device|
+      UI.message("Capturing screenshots on #{device}")
+
+      # Create output directory for this device
+      device_folder = device.gsub(/[^0-9A-Za-z._-]/, '_')
+      output_dir = File.expand_path("../screenshots/ios/#{device_folder}", __dir__)
+      FileUtils.mkdir_p(output_dir)
+
+      # Run integration test using flutter drive for screenshot support
+      begin
+        sh("cd .. && flutter drive --driver=test_driver/integration_test.dart --target=integration_test/screenshot_test.dart -d '#{device}' --screenshot='#{output_dir}'")
+        UI.success("Screenshots captured on #{device}")
+      rescue => ex
+        UI.error("Failed to capture screenshots on #{device}: #{ex}")
+      end
+    end
+
+    UI.success("iOS screenshots generation complete!")
+    UI.message("Screenshots saved to: ./fastlane/screenshots/ios/")
+  end
+
+  desc "Build and upload iOS app to App Store Connect"
+  lane :release do
+    UI.message("Building iOS release...")
+
+    # Build the iOS app
+    sh("cd .. && flutter build ios --release")
+
+    # Build the app archive
+    build_app(
+      workspace: "../ios/Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      output_directory: "./build"
+    )
+
+    # Upload to App Store Connect
+    upload_to_app_store(
+      skip_screenshots: true,
+      skip_metadata: false,
+      force: true
+    )
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    UI.message("Building iOS beta...")
+
+    # Build the iOS app
+    sh("cd .. && flutter build ios --release")
+
+    # Build the app archive
+    build_app(
+      workspace: "../ios/Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      output_directory: "./build"
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
+
+platform :android do
+  desc "Generate screenshots for Google Play Store"
+  lane :screenshots do
+    # Create output directory
+    output_dir = File.expand_path("../screenshots/android", __dir__)
+    FileUtils.mkdir_p(output_dir)
+
+    UI.message("Capturing Android screenshots")
+
+    # Check if emulator is running
+    devices_output = sh("cd .. && flutter devices", print_command: false)
+    unless devices_output.include?("emulator") || devices_output.include?("android")
+      UI.error("No Android emulator or device found!")
+      UI.message("Please start an emulator first:")
+      UI.message("  flutter emulators --launch <emulator_name>")
+      next
+    end
+
+    UI.success("Android device detected!")
+
+    # Run integration test
+    begin
+      sh("cd .. && flutter drive --driver=test_driver/integration_test.dart --target=integration_test/screenshot_test.dart -d emulator-5554 --screenshot='#{output_dir}'")
+      UI.success("Android screenshots generated successfully!")
+    rescue => ex
+      UI.error("Failed to capture screenshots: #{ex}")
+    end
+
+    UI.message("Screenshots saved to: #{output_dir}")
+  end
+
+  desc "Build AAB and upload to Google Play (internal track)"
+  lane :release do |options|
+    # Version values can be provided via env vars
+    version_name = ENV['VERSION_NAME'] || '1.0.0'
+    build_number = ENV['BUILD_NUMBER'] || '1'
+
+    UI.message("Building AAB with version_name=#{version_name} build_number=#{build_number}")
+
+    # Build the Android App Bundle with Flutter
+    sh("cd .. && flutter build appbundle --release --build-name #{version_name} --build-number #{build_number}")
+
+    aab_path = "../build/app/outputs/bundle/release/app-release.aab"
+    UI.user_error!("AAB not found at #{aab_path}") unless File.exist?(aab_path)
+
+    # Upload to Google Play using supply
+    # Set SUPPLY_JSON_KEY (path to service account JSON) in environment
+    supply(
+      aab: aab_path,
+      track: options[:track] || 'internal',
+      json_key: ENV['SUPPLY_JSON_KEY']
+    )
+  end
+
+  desc "Build APK for testing"
+  lane :build do
+    UI.message("Building release APK...")
+    sh("cd .. && flutter build apk --release")
+    UI.success("APK built at: build/app/outputs/flutter-apk/app-release.apk")
+  end
+end

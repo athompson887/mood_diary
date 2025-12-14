@@ -1,0 +1,8 @@
+app_identifier("com.athompson.mooddiary") # The bundle identifier of your app
+apple_id("a.thompson887@btinternet.com") # Your Apple Developer Portal username
+
+package_name("com.athompson.mooddiary") # The Android applicationId for Google Play
+
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

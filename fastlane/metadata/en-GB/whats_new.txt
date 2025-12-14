@@ -1,0 +1,6 @@
+Welcome to Mood Diary! This initial release includes:
+- Daily mood logging with notes and activities
+- Beautiful calendar history view
+- Mood statistics and charts
+- High contrast and accessibility options
+- English and Spanish language support

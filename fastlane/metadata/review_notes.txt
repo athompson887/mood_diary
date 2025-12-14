@@ -1,0 +1,14 @@
+Thank you for reviewing Mood Diary.
+
+This is a mood tracking app that stores all data locally on the device. No account or login is required.
+
+To test the app:
+1. Launch the app
+2. Tap the + button to add a mood entry
+3. Select a mood rating, add optional notes and activities
+4. View your entries in the History tab
+5. See statistics in the Statistics tab
+
+Premium features can be tested via the Settings > Upgrade option.
+
+Please let us know if you have any questions.

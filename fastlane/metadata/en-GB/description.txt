@@ -1,0 +1,28 @@
+Mood Diary is a beautifully designed app that helps you track your daily emotions and understand your mental wellbeing patterns.
+
+TRACK YOUR MOOD
+Log how you're feeling with simple, intuitive mood ratings. Add notes to capture what's on your mind and select activities that influenced your day.
+
+DISCOVER PATTERNS
+View your mood history in a beautiful calendar view. Spot trends and patterns with visual statistics that help you understand what affects your wellbeing.
+
+GAIN INSIGHTS
+See weekly and monthly mood averages, track your most common activities, and identify what helps you feel your best.
+
+ACCESSIBLE BY DESIGN
+- High contrast mode for better visibility
+- Dyslexia-friendly font options
+- Large tap targets for easier interaction
+- Works with screen readers
+
+PRIVACY FIRST
+All your data stays on your device. No accounts required, no data sent to servers. Your thoughts remain private.
+
+PREMIUM FEATURES
+Upgrade to unlock:
+- Extended mood history
+- Advanced statistics and insights
+- Export your data
+- Ad-free experience
+
+Start your journey to better emotional awareness today with Mood Diary.
