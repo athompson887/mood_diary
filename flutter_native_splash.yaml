@@ -1,0 +1,28 @@
+flutter_native_splash:
+  # Primary splash background color
+  color: "#FFFFFF"
+
+  # Dark mode splash background color
+  color_dark: "#1A1A2E"
+
+  # App icon/logo for splash screen (same as app icon or a splash-specific image)
+  image: assets/icons/app_icon.png
+
+  # Branding image at bottom (optional)
+  # branding: assets/icons/branding.png
+
+  # Android 12+ specific settings
+  android_12:
+    color: "#FFFFFF"
+    color_dark: "#1A1A2E"
+    image: assets/icons/app_icon.png
+    # icon_background_color: "#FFFFFF"
+    # icon_background_color_dark: "#1A1A2E"
+
+  # Platform settings
+  android: true
+  ios: true
+  web: false
+
+  # Full screen splash
+  fullscreen: true
