@@ -8,7 +8,11 @@
       "Bash(flutter gen-l10n:*)",
       "Bash(mkdir:*)",
       "Bash(cat:*)",
-      "Bash(./gradlew signingReport:*)"
+      "Bash(./gradlew signingReport:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(flutter run:*)",
+      "Bash(adb:*)",
+      "Bash(export PATH=\"$PATH:/Users/andrewthompson/Library/Android/sdk/platform-tools\")"
     ]
   }
 }

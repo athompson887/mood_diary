@@ -1,0 +1,163 @@
+# Mood Diary - Development Makefile
+# Common commands for building, testing, and releasing the app
+
+.PHONY: help setup clean build test lint icons splash l10n run release-android release-ios screenshots
+
+# Default target
+help:
+	@echo "Mood Diary - Available Commands"
+	@echo "================================"
+	@echo ""
+	@echo "Setup & Clean:"
+	@echo "  make setup          - Install all dependencies"
+	@echo "  make clean          - Clean build artifacts"
+	@echo ""
+	@echo "Development:"
+	@echo "  make run            - Run the app in debug mode"
+	@echo "  make test           - Run all tests"
+	@echo "  make lint           - Run Flutter analyzer"
+	@echo "  make l10n           - Generate localization files"
+	@echo ""
+	@echo "Assets:"
+	@echo "  make icons          - Generate app icons"
+	@echo "  make splash         - Generate splash screens"
+	@echo "  make assets         - Generate icons and splash"
+	@echo ""
+	@echo "Build:"
+	@echo "  make build-apk      - Build Android APK"
+	@echo "  make build-aab      - Build Android App Bundle"
+	@echo "  make build-ios      - Build iOS (no codesign)"
+	@echo ""
+	@echo "Release:"
+	@echo "  make release-android - Build & upload to Play Store (internal)"
+	@echo "  make release-ios     - Build & upload to App Store Connect"
+	@echo "  make screenshots     - Generate store screenshots"
+	@echo ""
+
+# ============================================================================
+# Setup & Clean
+# ============================================================================
+
+setup:
+	@echo "Installing Flutter dependencies..."
+	flutter pub get
+	@echo ""
+	@echo "Installing fastlane dependencies..."
+	cd fastlane && bundle install
+	@echo ""
+	@echo "Generating localization files..."
+	flutter gen-l10n
+	@echo ""
+	@echo "Setup complete!"
+
+clean:
+	@echo "Cleaning build artifacts..."
+	flutter clean
+	rm -rf build/
+	rm -rf .dart_tool/
+	rm -rf ios/Pods/
+	rm -rf ios/.symlinks/
+	@echo "Clean complete!"
+
+# ============================================================================
+# Development
+# ============================================================================
+
+run:
+	flutter run
+
+test:
+	flutter test
+
+lint:
+	flutter analyze
+
+l10n:
+	flutter gen-l10n
+
+# ============================================================================
+# Asset Generation
+# ============================================================================
+
+icons:
+	@echo "Generating app icons..."
+	@echo "Make sure assets/icons/app_icon.png exists (1024x1024)"
+	dart run flutter_launcher_icons
+
+splash:
+	@echo "Generating splash screens..."
+	dart run flutter_native_splash:create
+
+assets: icons splash
+	@echo "All assets generated!"
+
+# ============================================================================
+# Build Commands
+# ============================================================================
+
+build-apk:
+	@echo "Building Android APK..."
+	flutter build apk --release
+	@echo ""
+	@echo "APK built at: build/app/outputs/flutter-apk/app-release.apk"
+
+build-aab:
+	@echo "Building Android App Bundle..."
+	flutter build appbundle --release
+	@echo ""
+	@echo "AAB built at: build/app/outputs/bundle/release/app-release.aab"
+
+build-ios:
+	@echo "Building iOS (without codesigning)..."
+	flutter build ios --release --no-codesign
+	@echo ""
+	@echo "iOS app built at: build/ios/iphoneos/Runner.app"
+
+# ============================================================================
+# Release Commands
+# ============================================================================
+
+release-android:
+	@echo "Building and uploading to Google Play (internal track)..."
+	cd fastlane && bundle exec fastlane android release
+
+release-ios:
+	@echo "Building and uploading to App Store Connect..."
+	cd fastlane && bundle exec fastlane ios release
+
+beta-ios:
+	@echo "Building and uploading to TestFlight..."
+	cd fastlane && bundle exec fastlane ios beta
+
+# ============================================================================
+# Screenshots
+# ============================================================================
+
+screenshots:
+	@echo "Generating store screenshots..."
+	cd fastlane && bundle exec fastlane ios screenshots
+	cd fastlane && bundle exec fastlane android screenshots
+	@echo ""
+	@echo "Screenshots saved to fastlane/screenshots/"
+
+screenshots-ios:
+	cd fastlane && bundle exec fastlane ios screenshots
+
+screenshots-android:
+	cd fastlane && bundle exec fastlane android screenshots
+
+resize-screenshots:
+	@echo "Resizing screenshots for store requirements..."
+	./resize_screenshots.sh
+
+# ============================================================================
+# Utility
+# ============================================================================
+
+# Show current version
+version:
+	@grep "^version:" pubspec.yaml
+
+# Verify signing configuration
+signing-report:
+	cd android && ./gradlew signingReport
