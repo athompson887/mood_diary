@@ -1,5 +1,10 @@
 name: mood_diary
-description: "A mood diary app to track your daily emotions and feelings"
+description: >
+  A beautiful, accessible mood tracking app to log your daily emotions,
+  identify patterns, and gain insights into your mental wellbeing.
+  Features include mood logging with notes and activities, visual statistics,
+  history calendar view, and premium features via in-app purchase.
+
 publish_to: 'none'
 
 version: 1.0.0+1

@@ -7,7 +7,8 @@
       "Bash(flutter test:*)",
       "Bash(flutter gen-l10n:*)",
       "Bash(mkdir:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(./gradlew signingReport:*)"
     ]
   }
 }
