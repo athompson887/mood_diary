@@ -176,36 +176,36 @@ take_screenshot() {
 }
 
 # QUICK MODE (5 screens)
-take_screenshot "01_home_screen.png" "HOME SCREEN" "Navigate to the main home screen (stress bucket overview)"
-take_screenshot "02_timeline.png" "TIMELINE SCREEN" "Tap on the Timeline tab at the bottom navigation"
-take_screenshot "03_insights.png" "INSIGHTS SCREEN" "Tap on the Insights tab"
-take_screenshot "04_add_stressor.png" "ADD STRESSOR" "Tap the + button, then 'Add Stressor' to open the add stressor dialog"
+take_screenshot "01_today.png" "TODAY SCREEN" "Navigate to the Today tab (home screen showing today's mood). Best with a mood already logged."
+take_screenshot "02_add_mood.png" "ADD MOOD SCREEN" "Tap 'Log Mood' button and select a mood emoji to show the mood entry screen"
+take_screenshot "03_history.png" "HISTORY SCREEN" "Tap on the History tab (calendar icon) to show the calendar view with mood entries"
+take_screenshot "04_statistics.png" "STATISTICS SCREEN" "Tap on the Statistics tab (chart icon) to show mood trends and insights"
 take_screenshot "05_more_menu.png" "MORE MENU" "Tap on the More tab to show settings and options"
 
-# STANDARD MODE (10 screens - includes games)
+# STANDARD MODE (10 screens - includes activity selection and accessibility)
 if [ "$SCREENSHOT_MODE" != "quick" ]; then
-    take_screenshot "06_history_screen.png" "HISTORY SCREEN (Pensieve)" "From More menu, tap 'History' or navigate to History screen"
-    take_screenshot "07_activity_selection.png" "ACTIVITY SELECTION" "Go back to home, tap a coping activity or navigate to activity selection"
-    take_screenshot "08_game_bubble_wrap.png" "GAME: Bubble Wrap" "From activity selection, choose and open Bubble Wrap game"
-    take_screenshot "09_game_zen_garden.png" "GAME: Zen Garden" "Navigate back, then open Zen Garden game"
-    take_screenshot "10_accessibility.png" "ACCESSIBILITY SETTINGS" "Go to More → Accessibility to show accessibility features"
+    take_screenshot "06_add_mood_activities.png" "ACTIVITY SELECTION" "In Add Mood screen, scroll to show activity selection chips (Work, Exercise, Family, etc.)"
+    take_screenshot "07_add_mood_journal.png" "JOURNAL ENTRY" "In Add Mood screen, tap to expand the notes/journal section"
+    take_screenshot "08_history_detail.png" "MOOD DETAIL" "From History, tap on a day with a mood entry to view the details"
+    take_screenshot "09_accessibility.png" "ACCESSIBILITY SETTINGS" "Go to More → Accessibility to show high contrast, dyslexia font options"
+    take_screenshot "10_settings.png" "SETTINGS SCREEN" "Go to More → Settings to show app settings"
 fi
 
 # COMPLETE MODE (15+ screens - all features)
 if [ "$SCREENSHOT_MODE" == "complete" ]; then
-    take_screenshot "11_add_coping.png" "ADD COPING ACTION" "Tap + button, then 'Add Coping' to open add coping dialog"
-    take_screenshot "12_game_balloon_pop.png" "GAME: Balloon Pop" "Open Balloon Pop game from activities"
-    take_screenshot "13_game_breathing_bubble.png" "GAME: Breathing Bubble" "Open Breathing Bubble game"
-    take_screenshot "14_game_cloud_gazing.png" "GAME: Cloud Gazing" "Open Cloud Gazing game"
-    take_screenshot "15_settings.png" "SETTINGS SCREEN" "Go to More → Settings"
+    take_screenshot "11_statistics_weekly.png" "WEEKLY STATISTICS" "In Statistics, show weekly mood averages view"
+    take_screenshot "12_statistics_activities.png" "ACTIVITY INSIGHTS" "In Statistics, scroll to show most common activities"
+    take_screenshot "13_dark_mode.png" "DARK MODE" "Enable dark mode from Settings and show any screen"
+    take_screenshot "14_high_contrast.png" "HIGH CONTRAST MODE" "Enable high contrast from Accessibility and show any screen"
+    take_screenshot "15_recent_entries.png" "RECENT ENTRIES" "Go to Today tab and scroll to show recent mood entries list"
 
     echo ""
     echo -e "${YELLOW}Optional: Premium features (if available)${NC}"
     read -p "Do you want to capture premium/paywall screenshots? [y/N]: " CAPTURE_PREMIUM
 
     if [[ $CAPTURE_PREMIUM =~ ^[Yy]$ ]]; then
-        take_screenshot "16_paywall.png" "PAYWALL SCREEN" "Navigate to paywall/subscription screen"
-        take_screenshot "17_subscription_management.png" "SUBSCRIPTION MANAGEMENT" "If subscribed, show subscription management"
+        take_screenshot "16_paywall.png" "PAYWALL SCREEN" "Navigate to paywall/subscription screen (try accessing a premium feature)"
+        take_screenshot "17_premium_features.png" "PREMIUM FEATURES" "Show extended history or export options (if premium unlocked)"
     fi
 fi
 

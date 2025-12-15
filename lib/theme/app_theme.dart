@@ -209,17 +209,36 @@ class AppTheme {
     bool useDyslexiaFont = false,
     double scaleFactor = 1.0,
   }) {
-    // Use Lexend for dyslexia-friendly mode - it's designed for readability
-    // with features that help readers with dyslexia
+    // Define explicit font sizes for all text styles (Material 3 defaults)
+    const TextTheme baseWithSizes = TextTheme(
+      displayLarge: TextStyle(fontSize: 57),
+      displayMedium: TextStyle(fontSize: 45),
+      displaySmall: TextStyle(fontSize: 36),
+      headlineLarge: TextStyle(fontSize: 32),
+      headlineMedium: TextStyle(fontSize: 28),
+      headlineSmall: TextStyle(fontSize: 24),
+      titleLarge: TextStyle(fontSize: 22),
+      titleMedium: TextStyle(fontSize: 16),
+      titleSmall: TextStyle(fontSize: 14),
+      bodyLarge: TextStyle(fontSize: 16),
+      bodyMedium: TextStyle(fontSize: 14),
+      bodySmall: TextStyle(fontSize: 12),
+      labelLarge: TextStyle(fontSize: 14),
+      labelMedium: TextStyle(fontSize: 12),
+      labelSmall: TextStyle(fontSize: 11),
+    );
+
     TextTheme baseTheme;
 
     if (useDyslexiaFont) {
-      baseTheme = GoogleFonts.lexendTextTheme();
+      // Use Lexend for dyslexia-friendly mode - designed for readability
+      baseTheme = GoogleFonts.lexendTextTheme(baseWithSizes);
     } else {
-      // Use default Material text theme
-      baseTheme = brightness == Brightness.light
+      // Use default Material text theme with explicit sizes
+      final materialTheme = brightness == Brightness.light
           ? ThemeData.light().textTheme
           : ThemeData.dark().textTheme;
+      baseTheme = materialTheme.merge(baseWithSizes);
     }
 
     // Apply scale factor if needed
